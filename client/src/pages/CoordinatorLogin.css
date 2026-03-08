@@ -1,0 +1,263 @@
+.page-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1a001f 0%, #2d0047 25%, #4a0e4e 50%, #1a001f 75%, #000 100%);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+  position: relative;
+  overflow: hidden;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.page-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 20% 80%, rgba(255, 215, 0, 0.15) 0%, transparent 50%),
+              radial-gradient(circle at 80% 20%, rgba(138, 43, 226, 0.15) 0%, transparent 50%),
+              radial-gradient(circle at 50% 50%, rgba(255, 20, 147, 0.1) 0%, transparent 50%);
+  animation: backgroundFloat 20s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes backgroundFloat {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33% { transform: translateY(-15px) rotate(120deg); }
+  66% { transform: translateY(15px) rotate(240deg); }
+}
+
+.page-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 20% 80%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
+              radial-gradient(circle at 80% 20%, rgba(255, 215, 0, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.event-card {
+  position: relative;
+  z-index: 1;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.08));
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 215, 0, 0.4);
+  border-radius: 25px;
+  padding: 45px;
+  width: 90%;
+  max-width: 420px;
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.6),
+              0 0 25px rgba(255, 215, 0, 0.3),
+              inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  animation: cardFloat 6s ease-in-out infinite;
+  position: relative;
+  overflow: hidden;
+}
+
+@keyframes cardFloat {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.event-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(from 0deg, transparent, rgba(255, 215, 0, 0.1), transparent);
+  animation: rotateGlow 8s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes rotateGlow {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.logo-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 2;
+}
+
+.logo-wrapper .event-logo {
+  width: 180px;
+  max-width: 70%;
+  height: auto;
+  display: block;
+  animation: float 3.5s ease-in-out infinite,
+             pulse 2s ease-in-out infinite alternate;
+  filter: drop-shadow(0 0 24px rgba(255,215,0,0.95))
+          drop-shadow(0 0 48px rgba(255,215,0,0.7))
+          drop-shadow(0 0 110px rgba(255,215,0,0.35));
+  transform-origin: center;
+}
+
+.festival-title {
+  text-align: center;
+  color: #FFD700;
+  font-size: 30px;
+  margin-bottom: 12px;
+  background: linear-gradient(45deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3);
+  background-size: 400% 400%;
+  animation: rainbowShift 3s ease-in-out infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 25px rgba(255, 215, 0, 0.6);
+  font-weight: bold;
+}
+
+.subtitle {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 35px;
+  font-size: 16px;
+  font-weight: 300;
+  letter-spacing: 1px;
+  animation: fadeInUp 1.5s ease-out 0.3s both;
+}
+
+.coordinator-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.coordinator-card input {
+  padding: 15px;
+  border: 2px solid rgba(255, 215, 0, 0.3);
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.coordinator-card input:focus {
+  outline: none;
+  border-color: #FFD700;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+}
+
+.coordinator-card input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.coordinator-card button {
+  padding: 16px;
+  background: linear-gradient(135deg, #FFD700, #FFA500, #FF8C00, #FFD700);
+  background-size: 300% 300%;
+  animation: rainbowButton 4s ease-in-out infinite;
+  color: #1a001f;
+  border: none;
+  border-radius: 15px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  margin-top: 15px;
+  box-shadow: 0 0 25px rgba(255, 215, 0, 0.6);
+  position: relative;
+  overflow: hidden;
+}
+
+@keyframes rainbowButton {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.coordinator-card button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s;
+}
+
+.coordinator-card button:hover::before {
+  left: 100%;
+}
+
+.coordinator-card button:hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 0 40px rgba(255, 215, 0, 0.9);
+}
+
+.coordinator-card button:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* responsive layout */
+@media (max-width: 768px) {
+  .event-logo { max-width: 80px; }
+  .logo-wrapper { margin-bottom: 15px; }
+  .event-card { padding: 1.5rem; }
+}
+
+.coordinator-card button:active {
+  transform: translateY(0);
+}
+
+.coord-link {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.7);
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.coord-link span {
+  color: #FFD700;
+  cursor: pointer;
+  margin-left: 5px;
+  font-weight: bold;
+}
+
+.coord-link span:hover {
+  text-decoration: underline;
+}
+
+/* responsive adjustments */
+@media (max-width: 768px) {
+  .coordinator-card { padding: 2rem; }
+  .festival-title { font-size: 2rem; }
+  .subtitle, .coord-link { font-size: 0.9rem; }
+  .coordinator-card input, .coordinator-card button { font-size: 1rem; }
+}
+
+@media (max-width: 360px) {
+  .coordinator-card { padding: 1.5rem; }
+  .festival-title { font-size: 1.75rem; }
+  .subtitle, .coord-link { font-size: 0.8rem; }
+  .coordinator-card input, .coordinator-card button { font-size: 0.9rem; }
+}
+

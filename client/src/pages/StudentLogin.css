@@ -1,0 +1,228 @@
+.page-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle at center, #2a003f, #1a001f, #000);
+  background-size: 400% 400%;
+  animation: backgroundShift 20s ease infinite;
+  overflow: hidden;
+  position: relative;
+  font-family: 'Poppins', sans-serif;
+}
+
+@keyframes backgroundShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.logo-wrapper .event-logo {
+  width: 180px;
+  max-width: 70%;
+  height: auto;
+  display: block;
+  /* stronger glow + floating (overrides global if needed) */
+  animation: float 3.5s ease-in-out infinite,
+             pulse 2s ease-in-out infinite alternate;
+  filter: drop-shadow(0 0 24px rgba(255,215,0,0.95))
+          drop-shadow(0 0 48px rgba(255,215,0,0.7))
+          drop-shadow(0 0 110px rgba(255,215,0,0.35));
+  transform-origin: center;
+}
+
+@keyframes rotateBg {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+}
+
+.event-card {
+  position: relative;
+  z-index: 1;
+  width: 90%;
+  max-width: 450px;
+  padding: 2.5rem;
+  border-radius: 30px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.09));
+  backdrop-filter: blur(25px);
+  text-align: center;
+  color: white;
+  box-shadow: 0 0 50px rgba(255, 215, 0, 0.5),
+              0 0 100px rgba(255, 215, 0, 0.2),
+              inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  animation: cardGlow 4s ease-in-out infinite;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+@keyframes cardGlow {
+  0%, 100% { box-shadow: 0 0 50px rgba(255, 215, 0, 0.5), 0 0 100px rgba(255, 215, 0, 0.2); }
+  50% { box-shadow: 0 0 70px rgba(255, 215, 0, 0.7), 0 0 140px rgba(255, 215, 0, 0.4); }
+}
+
+.event-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(from 0deg, transparent, rgba(138, 43, 226, 0.1), rgba(255, 20, 147, 0.1), transparent);
+  animation: rotateMultiColor 10s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes rotateMultiColor {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.logo-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 2;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.festival-title {
+  font-size: 28px;
+  margin-bottom: 12px;
+  background: linear-gradient(45deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3);
+  background-size: 400% 400%;
+  animation: rainbowShift 3s ease-in-out infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+  font-weight: bold;
+}
+
+.subtitle {
+  font-size: 16px;
+  margin-bottom: 35px;
+  opacity: 0.9;
+  text-align: center;
+  font-weight: 300;
+  letter-spacing: 1px;
+  animation: fadeInUp 1.5s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.student-card input {
+  width: 100%;
+  padding: 14px;
+  margin: 15px 0;
+  border-radius: 12px;
+  border: none;
+  outline: none;
+  font-size: 14px;
+}
+
+.student-card button {
+  width: 100%;
+  padding: 16px;
+  margin-top: 20px;
+  border-radius: 15px;
+  border: none;
+  background: linear-gradient(135deg, gold, #ffcc00, #ffd700, gold);
+  background-size: 300% 300%;
+  animation: goldFlow 3s ease-in-out infinite;
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 0 25px gold, 0 0 50px gold;
+  position: relative;
+  overflow: hidden;
+  font-size: 16px;
+}
+
+@keyframes goldFlow {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.student-card button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transition: left 0.6s;
+}
+
+.student-card button:hover::before {
+  left: 100%;
+}
+
+.student-card button:hover {
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: 0 0 40px gold, 0 0 80px gold;
+}
+
+.student-card button:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.coord-link {
+  margin-top: 25px;
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+.coord-link span {
+  color: gold;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.coord-link span:hover {
+  text-decoration: underline;
+}
+
+
+/* responsive tweaks */
+@media (max-width: 768px) {
+  .event-logo { max-width: 80px; }
+  .logo-wrapper { margin-bottom: 15px; }
+  .event-card { padding: 1.5rem; }
+}
+@media (max-width: 768px) {
+  .student-card { padding: 1.5rem; }
+  .festival-title { font-size: 1.75rem; }
+  .subtitle, .coord-link { font-size: 0.9rem; }
+}
+
+@media (max-width: 360px) {
+  .student-card { padding: 1rem; }
+  .festival-title { font-size: 1.5rem; }
+  .subtitle, .coord-link { font-size: 0.8rem; }
+}
