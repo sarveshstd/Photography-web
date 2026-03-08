@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/Photography-web/static/css/main.187590f9.css",
+    "main.js": "/Photography-web/static/js/main.21d1b2cf.js",
+    "static/js/453.eca5f793.chunk.js": "/Photography-web/static/js/453.eca5f793.chunk.js",
+    "index.html": "/Photography-web/index.html",
+    "main.187590f9.css.map": "/Photography-web/static/css/main.187590f9.css.map",
+    "main.21d1b2cf.js.map": "/Photography-web/static/js/main.21d1b2cf.js.map",
+    "453.eca5f793.chunk.js.map": "/Photography-web/static/js/453.eca5f793.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.187590f9.css",
+    "static/js/main.21d1b2cf.js"
+  ]
+}
