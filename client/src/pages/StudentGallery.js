@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../utils/api';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from '../config';
 import './StudentGallery.css';
 
 export default function StudentGallery() {
@@ -175,15 +176,15 @@ export default function StudentGallery() {
           <div className="gallery-grid">
             {votedMedia.map((item) => (
               <div key={item._id} className="gallery-card voted-card">
-                {item.type === 'photo' ? (
+{item.type === 'photo' ? (
                   <img
-                    src={`http://localhost:5000${item.url}`}
+                    src={`${API_BASE_URL}${item.url}`}
                     alt={item.title}
                     onError={() => handleBroken(item._id)}
                   />
                 ) : (
                   <video
-                    src={`http://localhost:5000${item.url}`}
+                    src={`${API_BASE_URL}${item.url}`}
                     controls
                     onError={() => handleBroken(item._id)}
                   />
@@ -205,19 +206,19 @@ export default function StudentGallery() {
       <div className="other-section">
         <h2>{votedMedia.length > 0 ? 'Other Media' : 'Gallery'}</h2>
         <div className="gallery-grid">
-          {filteredOtherMedia.map((item) => {
+{filteredOtherMedia.map((item) => {
             const hasVoted = item.type === 'photo' ? hasVotedPhoto : hasVotedVideo;
             return (
               <div key={item._id} className="gallery-card">
                 {item.type === 'photo' ? (
                   <img
-                    src={`http://localhost:5000${item.url}`}
+                    src={`${API_BASE_URL}${item.url}`}
                     alt={item.title}
                     onError={() => handleBroken(item._id)}
                   />
                 ) : (
                   <video
-                    src={`http://localhost:5000${item.url}`}
+src={`${API_BASE_URL}${item.url}`}
                     controls
                     onError={() => handleBroken(item._id)}
                   />
@@ -265,15 +266,15 @@ export default function StudentGallery() {
           <div className="view-modal-content" onClick={(e) => e.stopPropagation()}>
             <button className="close-view-btn" onClick={() => setViewModal(false)}>✕</button>
             <h2>{viewingMedia.title}</h2>
-            {viewingMedia.type === 'photo' ? (
+{viewingMedia.type === 'photo' ? (
               <img 
-                src={`http://localhost:5000${viewingMedia.url}`} 
+                src={`${API_BASE_URL}${viewingMedia.url}`} 
                 alt={viewingMedia.title} 
                 className="full-media"
               />
             ) : (
               <video 
-                src={`http://localhost:5000${viewingMedia.url}`} 
+                src={`${API_BASE_URL}${viewingMedia.url}`} 
                 controls 
                 className="full-media"
               />

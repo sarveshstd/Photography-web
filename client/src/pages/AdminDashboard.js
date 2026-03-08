@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../utils/api';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from '../config';
 import './AdminDashboard.css';
 
 export default function AdminDashboard() {
@@ -274,10 +275,10 @@ export default function AdminDashboard() {
           <div className="media-grid">
             {sortedMedia.map((item) => (
               <div key={item._id} className="media-card admin-card">
-                {item.type === 'photo' ? (
-                  <img src={`http://localhost:5000${item.url}`} alt={item.title} />
+{item.type === 'photo' ? (
+                  <img src={`${API_BASE_URL}${item.url}`} alt={item.title} />
                 ) : (
-                  <video src={`http://localhost:5000${item.url}`} controls />
+                  <video src={`${API_BASE_URL}${item.url}`} controls />
                 )}
                 <div className="media-info">
                   {editingId === item._id ? (
