@@ -9,8 +9,15 @@ dotenv.config();
 
 const app = express();
 
-// middleware
-app.use(cors());
+// middleware - configure CORS to allow GitHub Pages frontend
+const corsOptions = {
+  origin: [
+    'http://localhost:3000',
+    'https://sarveshstd.github.io'
+  ],
+  credentials: true
+};
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // serve uploads directory
