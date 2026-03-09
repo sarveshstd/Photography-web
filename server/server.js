@@ -10,21 +10,7 @@ const app = express();
 
 // Middleware
 app.use(express.json());
-
-// Allow frontend requests
-app.use(
-  cors({
-    origin: [
-      "http://localhost:3000",
-      "https://*.vercel.app",
-    ],
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
-  })
-);
-
-// Serve uploads folder
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use(cors());
 
 // MongoDB connection
 const mongoUri =
@@ -35,7 +21,7 @@ mongoose
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.error(err));
 
-// Test route
+// API test route
 app.get("/", (req, res) => {
   res.send("Photography API running 🚀");
 });
