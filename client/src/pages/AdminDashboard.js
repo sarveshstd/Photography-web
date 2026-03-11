@@ -12,6 +12,7 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [editTitle, setEditTitle] = useState('');
+  const [fileInputKey, setFileInputKey] = useState(Date.now());
   const [viewMode, setViewMode] = useState('leaderboard'); // 'leaderboard' or 'voters'
   const [votersData, setVotersData] = useState({ photos: [], videos: [] });
   const [votersTab, setVotersTab] = useState('photo'); // 'photo' or 'video'
@@ -75,6 +76,7 @@ export default function AdminDashboard() {
       alert('Media uploaded successfully!');
       setTitle('');
       setFile(null);
+      setFileInputKey(Date.now());
       await fetchMedia();
       await fetchVoters();
       // notify any open student galleries that media changed
@@ -242,6 +244,7 @@ export default function AdminDashboard() {
             <option value="video">Video</option>
           </select>
           <input
+            key={fileInputKey}
             type="file"
             accept={mediaType === 'photo' ? 'image/*' : 'video/*'}
             onChange={(e) => setFile(e.target.files[0])}
