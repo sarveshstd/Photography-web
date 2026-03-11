@@ -9,7 +9,7 @@ const Media = require("../models/Media");
 // -----------------------------
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "uploads/");
+    cb(null, path.join(__dirname, "../uploads/"));
   },
   filename: function (req, file, cb) {
     const uniqueName = Date.now() + "-" + file.originalname;
@@ -36,7 +36,7 @@ router.post("/", upload.single("file"), async (req, res) => {
     const media = new Media({
       title,
       type,
-      file: req.file.filename,
+      url: `/uploads/${req.file.filename}`,
       votes: 0
     });
 
