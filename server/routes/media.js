@@ -8,10 +8,11 @@ const Media = require("../models/Media");
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const cloudinary = require("cloudinary").v2;
 
-console.log("--- CLOUDINARY ENV DIAGNOSTICS ---");
-console.log("Cloud Name exists:", !!process.env.CLOUDINARY_CLOUD_NAME);
-console.log("API Key exists:", !!process.env.CLOUDINARY_API_KEY);
-console.log("API Secret exists:", !!process.env.CLOUDINARY_API_SECRET);
+console.log("🔍 DETAILED CLOUDINARY ENV DIAGNOSTICS:");
+console.log("Cloud Name:", process.env.CLOUDINARY_CLOUD_NAME ? `[SET, len:${process.env.CLOUDINARY_CLOUD_NAME.length}]` : 'MISSING');
+console.log("API Key:", process.env.CLOUDINARY_API_KEY ? `[SET, len:${process.env.CLOUDINARY_API_KEY.length}, starts:${process.env.CLOUDINARY_API_KEY.substring(0,4)}...]` : 'MISSING');
+console.log("API Secret:", process.env.CLOUDINARY_API_SECRET ? '[SET]' : 'MISSING');
+console.log("Config result:", cloudinary.config());
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
