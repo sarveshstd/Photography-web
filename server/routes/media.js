@@ -111,6 +111,14 @@ router.delete("/:id", async (req, res) => {
     const media = await Media.findById(req.params.id);
     if (!media) return res.status(404).json({ message: "Media not found" });
 
+    // Reset votes for students who voted for this media item
+    const Student = require("../models/Student");
+    if (media.type === 'photo') {
+      await Student.updateMany({ votedPhoto: media._id }, { $set: { votedPhoto: null } });
+    } else if (media.type === 'video') {
+      await Student.updateMany({ votedVideo: media._id }, { $set: { votedVideo: null } });
+    }
+
     // Optional: Delete file from Cloudinary (requires public_id extraction and cloudinary.uploader.destroy)
     // For now, we just remove the database entry to keep it simple and ensure the frontend works.
     await Media.findByIdAndDelete(req.params.id);
