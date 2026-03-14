@@ -70,29 +70,37 @@ router.get("/voters", async (req, res) => {
 // -----------------------------
 // Upload media
 // -----------------------------
-router.post("/", upload.single("file"), async (req, res) => {
-  try {
-    const { title, type } = req.body;
-
-    if (!req.file) {
-      return res.status(400).json({ message: "No file uploaded" });
+router.post("/", (req, res) => {
+  upload.single("file")(req, res, async (err) => {
+    if (err) {
+      console.error("Multer/Cloudinary exact error:", err);
+      return res.status(500).json({ message: "Cloudinary storage error: " + err.message });
     }
 
-    const media = new Media({
-      title,
-      type,
-      url: req.file.path, // Cloudinary provides the full URL in path
-      votes: 0
-    });
+    try {
+      const { title, type } = req.body;
 
-    await media.save();
+      if (!req.file) {
+        return res.status(400).json({ message: "No file uploaded - check form data format" });
+      }
 
-    res.json({ message: "Upload successful", media });
+      console.log("File uploaded to Cloudinary successfully:", req.file.path);
 
-  } catch (error) {
-    console.error("Upload error:", error);
-    res.status(500).json({ message: "Upload failed" });
-  }
+      const media = new Media({
+        title,
+        type,
+        url: req.file.path, // Cloudinary provides the full URL in path
+        votes: 0
+      });
+
+      await media.save();
+
+      res.json({ message: "Upload successful", media });
+    } catch (saveError) {
+      console.error("Database save error:", saveError);
+      res.status(500).json({ message: "Database save failed: " + saveError.message });
+    }
+  });
 });
 
 // -----------------------------
