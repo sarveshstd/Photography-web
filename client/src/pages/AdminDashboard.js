@@ -276,10 +276,10 @@ export default function AdminDashboard() {
           <div className="media-grid">
             {sortedMedia.map((item) => (
               <div key={item._id} className="media-card admin-card">
-{item.type === 'photo' ? (
-                  <img src={`${API_BASE_URL}${item.url}`} alt={item.title} onError={(e) => { e.target.style.display = 'none'; }} />
+                {item.type === 'photo' ? (
+                  <img src={item.url.startsWith('http') ? item.url : `${API_BASE_URL}${item.url}`} alt={item.title} onError={(e) => { e.target.style.display = 'none'; }} />
                 ) : (
-                  <video src={`${API_BASE_URL}${item.url}`} controls onError={(e) => { e.target.style.display = 'none'; }} />
+                  <video src={item.url.startsWith('http') ? item.url : `${API_BASE_URL}${item.url}`} controls onError={(e) => { e.target.style.display = 'none'; }} />
                 )}
                 <div className="media-info">
                   {editingId === item._id ? (

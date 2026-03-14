@@ -176,15 +176,15 @@ export default function StudentGallery() {
           <div className="gallery-grid">
             {votedMedia.map((item) => (
               <div key={item._id} className="gallery-card voted-card">
-{item.type === 'photo' ? (
+                {item.type === 'photo' ? (
                   <img
-                    src={`${API_BASE_URL}${item.url}`}
+                    src={item.url.startsWith('http') ? item.url : `${API_BASE_URL}${item.url}`}
                     alt={item.title}
                     onError={() => handleBroken(item._id)}
                   />
                 ) : (
                   <video
-                    src={`${API_BASE_URL}${item.url}`}
+                    src={item.url.startsWith('http') ? item.url : `${API_BASE_URL}${item.url}`}
                     controls
                     onError={() => handleBroken(item._id)}
                   />
@@ -212,13 +212,13 @@ export default function StudentGallery() {
               <div key={item._id} className="gallery-card">
                 {item.type === 'photo' ? (
                   <img
-                    src={`${API_BASE_URL}${item.url}`}
+                    src={item.url.startsWith('http') ? item.url : `${API_BASE_URL}${item.url}`}
                     alt={item.title}
                     onError={() => handleBroken(item._id)}
                   />
                 ) : (
                   <video
-src={`${API_BASE_URL}${item.url}`}
+                    src={item.url.startsWith('http') ? item.url : `${API_BASE_URL}${item.url}`}
                     controls
                     onError={() => handleBroken(item._id)}
                   />
@@ -268,13 +268,13 @@ src={`${API_BASE_URL}${item.url}`}
             <h2>{viewingMedia.title}</h2>
 {viewingMedia.type === 'photo' ? (
               <img 
-                src={`${API_BASE_URL}${viewingMedia.url}`} 
+                src={viewingMedia.url.startsWith('http') ? viewingMedia.url : `${API_BASE_URL}${viewingMedia.url}`} 
                 alt={viewingMedia.title} 
                 className="full-media"
               />
             ) : (
               <video 
-                src={`${API_BASE_URL}${viewingMedia.url}`} 
+                src={viewingMedia.url.startsWith('http') ? viewingMedia.url : `${API_BASE_URL}${viewingMedia.url}`} 
                 controls 
                 className="full-media"
               />
