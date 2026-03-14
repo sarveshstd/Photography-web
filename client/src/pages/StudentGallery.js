@@ -37,7 +37,7 @@ export default function StudentGallery() {
 
   const fetchMedia = async () => {
     try {
-      const res = await api.get('/api/media/public');
+      const res = await api.get('/api/media');
       setMedia(res.data);
     } catch (err) {
       console.error('Error fetching media:', err);

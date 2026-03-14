@@ -70,9 +70,7 @@ export default function AdminDashboard() {
     formData.append('file', file);
 
     try {
-      await api.post('/api/media', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      });
+      await api.post('/api/media', formData);
       alert('Media uploaded successfully!');
       setTitle('');
       setFile(null);
@@ -218,8 +216,8 @@ export default function AdminDashboard() {
       <div className="admin-header">
         <div className="header-left">
           <img
-            src="/assets/download.png"
-            alt="Download"
+            src="/assets/event-logo.png"
+            alt="Logo"
             className="download-logo"
             width="40"
             height="40"
@@ -279,9 +277,9 @@ export default function AdminDashboard() {
             {sortedMedia.map((item) => (
               <div key={item._id} className="media-card admin-card">
 {item.type === 'photo' ? (
-                  <img src={`${API_BASE_URL}${item.url}`} alt={item.title} />
+                  <img src={`${API_BASE_URL}${item.url}`} alt={item.title} onError={(e) => { e.target.style.display = 'none'; }} />
                 ) : (
-                  <video src={`${API_BASE_URL}${item.url}`} controls />
+                  <video src={`${API_BASE_URL}${item.url}`} controls onError={(e) => { e.target.style.display = 'none'; }} />
                 )}
                 <div className="media-info">
                   {editingId === item._id ? (
