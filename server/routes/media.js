@@ -74,7 +74,9 @@ router.post("/", (req, res) => {
   upload.single("file")(req, res, async (err) => {
     if (err) {
       console.error("Multer/Cloudinary exact error:", err);
-      return res.status(500).json({ message: "Cloudinary storage error: " + err.message });
+      // Fallback to stringifying the whole error object if .message is missing
+      const errorMessage = err.message || (typeof err === 'string' ? err : JSON.stringify(err));
+      return res.status(500).json({ message: "Cloudinary storage error: " + errorMessage });
     }
 
     try {
