@@ -44,10 +44,7 @@ export default function StudentGallery() {
     }
   };
 
-  const handleBroken = (id) => {
-    console.warn('Removing broken media', id);
-    setMedia((prev) => prev.filter((m) => m._id !== id));
-  };
+
 
   const handleVote = (item) => {
     setSelectedMedia(item);
@@ -180,13 +177,13 @@ export default function StudentGallery() {
                   <img
                     src={item.url.startsWith('http') ? item.url : `${API_BASE_URL}${item.url}`}
                     alt={item.title}
-                    onError={() => handleBroken(item._id)}
+                    onError={(e) => { e.target.style.display = 'none'; }}
                   />
                 ) : (
                   <video
                     src={item.url.startsWith('http') ? item.url : `${API_BASE_URL}${item.url}`}
                     controls
-                    onError={() => handleBroken(item._id)}
+                    onError={(e) => { e.target.style.display = 'none'; }}
                   />
                 )}
                 <div className="card-content">
@@ -214,13 +211,13 @@ export default function StudentGallery() {
                   <img
                     src={item.url.startsWith('http') ? item.url : `${API_BASE_URL}${item.url}`}
                     alt={item.title}
-                    onError={() => handleBroken(item._id)}
+                    onError={(e) => { e.target.style.display = 'none'; }}
                   />
                 ) : (
                   <video
                     src={item.url.startsWith('http') ? item.url : `${API_BASE_URL}${item.url}`}
                     controls
-                    onError={() => handleBroken(item._id)}
+                    onError={(e) => { e.target.style.display = 'none'; }}
                   />
                 )}
                 <div className="card-content">
