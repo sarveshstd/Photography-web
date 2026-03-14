@@ -1,32 +1,38 @@
 const express = require("express");
 const router = express.Router();
 const multer = require("multer");
-const path = require("path");
-const fs = require("fs");
 const Media = require("../models/Media");
+const cloudinary = require("cloudinary").v2;
 
-const { CloudinaryStorage } = require("multer-storage-cloudinary");
-const cloudinary = require("cloudinary");
-
+// Configure Cloudinary
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const storage = new CloudinaryStorage({
-  cloudinary: cloudinary,
-  params: {
-    folder: "photography_event",
-    resource_type: "auto",
-    allowed_formats: ["jpg", "png", "jpeg", "mp4", "mov", "avi"],
-  },
+// Use memory storage - we'll stream the file directly to Cloudinary
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 50 * 1024 * 1024 }, // 50MB max
 });
 
-const upload = multer({
-  storage: storage,
-  limits: { fileSize: 50 * 1024 * 1024 } // increased to 50MB for video
-});
+// Helper: upload a buffer to Cloudinary using upload_stream
+function uploadToCloudinary(buffer, resourceType) {
+  return new Promise((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream(
+      {
+        folder: "photography_event",
+        resource_type: resourceType || "auto",
+      },
+      (error, result) => {
+        if (error) return reject(error);
+        resolve(result);
+      }
+    );
+    stream.end(buffer);
+  });
+}
 
 // -----------------------------
 // Get all media
@@ -48,18 +54,18 @@ router.get("/voters", async (req, res) => {
   try {
     const defaultData = { photos: [], videos: [] };
     const allMedia = await Media.find().sort({ votes: -1 });
-    
-    allMedia.forEach(m => {
+
+    allMedia.forEach((m) => {
       const item = {
         mediaId: m._id,
         title: m.title,
         voteCount: m.votes,
-        voters: m.voters
+        voters: m.voters,
       };
-      if (m.type === 'photo') defaultData.photos.push(item);
-      else if (m.type === 'video') defaultData.videos.push(item);
+      if (m.type === "photo") defaultData.photos.push(item);
+      else if (m.type === "video") defaultData.videos.push(item);
     });
-    
+
     res.json(defaultData);
   } catch (error) {
     console.error("Get voters error:", error);
@@ -70,39 +76,34 @@ router.get("/voters", async (req, res) => {
 // -----------------------------
 // Upload media
 // -----------------------------
-router.post("/", (req, res) => {
-  upload.single("file")(req, res, async (err) => {
-    if (err) {
-      console.error("Multer/Cloudinary exact error:", err);
-      // Fallback to stringifying the whole error object if .message is missing
-      const errorMessage = err.message || (typeof err === 'string' ? err : JSON.stringify(err));
-      return res.status(500).json({ message: "Cloudinary storage error: " + errorMessage });
+router.post("/", upload.single("file"), async (req, res) => {
+  try {
+    const { title, type } = req.body;
+
+    if (!req.file) {
+      return res.status(400).json({ message: "No file uploaded" });
     }
 
-    try {
-      const { title, type } = req.body;
+    // Determine Cloudinary resource type
+    const resourceType = type === "video" ? "video" : "image";
 
-      if (!req.file) {
-        return res.status(400).json({ message: "No file uploaded - check form data format" });
-      }
+    // Upload the file buffer directly to Cloudinary
+    const result = await uploadToCloudinary(req.file.buffer, resourceType);
 
-      console.log("File uploaded to Cloudinary successfully:", req.file.path);
+    const media = new Media({
+      title,
+      type,
+      url: result.secure_url, // Permanent Cloudinary URL
+      votes: 0,
+    });
 
-      const media = new Media({
-        title,
-        type,
-        url: req.file.path, // Cloudinary provides the full URL in path
-        votes: 0
-      });
+    await media.save();
 
-      await media.save();
-
-      res.json({ message: "Upload successful", media });
-    } catch (saveError) {
-      console.error("Database save error:", saveError);
-      res.status(500).json({ message: "Database save failed: " + saveError.message });
-    }
-  });
+    res.json({ message: "Upload successful", media });
+  } catch (error) {
+    console.error("Upload error:", error);
+    res.status(500).json({ message: "Upload failed: " + error.message });
+  }
 });
 
 // -----------------------------
@@ -115,14 +116,18 @@ router.delete("/:id", async (req, res) => {
 
     // Reset votes for students who voted for this media item
     const Student = require("../models/Student");
-    if (media.type === 'photo') {
-      await Student.updateMany({ votedPhoto: media._id }, { $set: { votedPhoto: null } });
-    } else if (media.type === 'video') {
-      await Student.updateMany({ votedVideo: media._id }, { $set: { votedVideo: null } });
+    if (media.type === "photo") {
+      await Student.updateMany(
+        { votedPhoto: media._id },
+        { $set: { votedPhoto: null } }
+      );
+    } else if (media.type === "video") {
+      await Student.updateMany(
+        { votedVideo: media._id },
+        { $set: { votedVideo: null } }
+      );
     }
 
-    // Optional: Delete file from Cloudinary (requires public_id extraction and cloudinary.uploader.destroy)
-    // For now, we just remove the database entry to keep it simple and ensure the frontend works.
     await Media.findByIdAndDelete(req.params.id);
     res.json({ message: "Media deleted successfully" });
   } catch (error) {
@@ -138,8 +143,8 @@ router.put("/:id", async (req, res) => {
   try {
     const { title } = req.body;
     const media = await Media.findByIdAndUpdate(
-      req.params.id, 
-      { title }, 
+      req.params.id,
+      { title },
       { new: true }
     );
     if (!media) return res.status(404).json({ message: "Media not found" });
